@@ -53,19 +53,32 @@ public class WeatherView extends VerticalLayout {
 
         Image img = new Image("", "");
         img.setWidth("200px");
-        add(img);
+        //add(img);
 
         H2 title = new H2("");
         Paragraph description = new Paragraph("");
 
+        Paragraph wind = new Paragraph("");
+
         IFrame googleMaps = new IFrame("");
 
-        add(
+        VerticalLayout infos1 = new VerticalLayout(
+                img,
                 title,
-                description
+                description,
+                wind
         );
 
-        add(googleMaps);
+        add(new HorizontalLayout(infos1, googleMaps));
+
+//        add(
+//                title,
+//                description
+//        );
+//
+//        add(wind);
+//
+//        add(googleMaps);
 
         searchButton.addClickListener(click -> {
             location = locationField.getValue();
@@ -78,8 +91,10 @@ public class WeatherView extends VerticalLayout {
 
             img.setSrc("https://openweathermap.org/img/wn/" + weatherInfo.weather.get(0).icon + "@2x.png");
             img.setAlt(weatherInfo.weather.get(0).description);
-            title.setText("In " + location + " ist die Temperatur " + weatherInfo.main.temp + "°C");
+            title.setText("In " + weatherInfo.name + " ist die Temperatur " + weatherInfo.main.temp + "°C");
             description.setText("Das Wetter ist: " + weatherInfo.weather.get(0).description);
+
+            wind.setText("Der Wind hat eine Geschwindigkeit von " + weatherInfo.wind.speed + "km/h und hat eine Richtung von " + weatherInfo.wind.deg + "°");
 
             googleMaps.setSrc("https://maps.google.com/maps?q=" + weatherInfo.coord.lat + "%20" + weatherInfo.coord.lon + "&t=&z=9&ie=UTF8&iwloc=&output=embed");
 
